@@ -1,0 +1,13 @@
+# compiled binaries
+/*.ex5
+/*.ex4
+
+# logs, temporary files
+/**/*.log
+/**/*.tmp
+
+# Windows thumbnail cache
+Thumbs.db
+
+# VSCode workspace settings
+.vscode/
