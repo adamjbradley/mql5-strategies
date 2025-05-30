@@ -1,4 +1,4 @@
-#property indicator_separate_window
+﻿#property indicator_separate_window
 #property indicator_buffers 1
 #property indicator_plots   1
 
@@ -21,10 +21,10 @@ int OnInit()
     //--- indicator buffers mapping
     SetIndexBuffer(0, LWTIBuffer, INDICATOR_DATA);
 
-    //--- set as series (0 = current bar)
-    ArraySetAsSeries(rawVol, true);
-    ArraySetAsSeries(emaRaw, true);
-    ArraySetAsSeries(LWTIBuffer, true);
+    //--- DO NOT set as series - use standard indexing for all arrays
+    ArraySetAsSeries(rawVol, false);
+    ArraySetAsSeries(emaRaw, false);
+    ArraySetAsSeries(LWTIBuffer, false);
 
     //--- indicator name
     IndicatorSetString(INDICATOR_SHORTNAME, "Larry Williams Trade Indicator");
@@ -47,31 +47,66 @@ int OnCalculate(const int rates_total,
                 const long &volume[],
                 const int &spread[])
 {
-    //--- ensure internal arrays are sized
-    if(ArraySize(rawVol)!=rates_total)
-        ArrayResize(rawVol, rates_total);
-    if(ArraySize(emaRaw)!=rates_total)
-        ArrayResize(emaRaw, rates_total);
-
-    int start = prev_calculated;
-    if(start < 1) start = 1; // start from second bar for recursion
-
-    double alpha1 = 2.0 / (LWTIPeriod + 1.0);
-    double alpha2 = 2.0 / (LWTISmoothing + 1.0);
-
+    // Check for minimum required bars
+    if(rates_total < 2) return(0);
+    
+    // Check if input arrays are set as series
+    bool inputIsSeries = ArrayGetAsSeries(close);
+    
+    // Ensure all arrays are properly sized
+    ArrayResize(rawVol, rates_total);
+    ArrayResize(emaRaw, rates_total);
+    
+    // Prevent division by zero
+    double alpha1 = (LWTIPeriod > 0) ? 2.0 / (LWTIPeriod + 1.0) : 0.1;
+    double alpha2 = (LWTISmoothing > 0) ? 2.0 / (LWTISmoothing + 1.0) : 0.1;
+    
+    // Determine starting point for calculation
+    int start;
+    
+    // First time calculation or after parameter change
+    if(prev_calculated <= 0)
+    {
+        // Initialize all bars with zero
+        for(int i = 0; i < rates_total; i++)
+        {
+            rawVol[i] = 0;
+            emaRaw[i] = 0;
+            LWTIBuffer[i] = 0;
+        }
+        
+        // Start calculation from the first bar
+        start = 0;
+    }
+    else
+    {
+        // Continue calculation from where we left off
+        start = prev_calculated - 1;
+        // Ensure we don't go below valid index
+        if(start < 0) start = 0;
+    }
+    
+    // Main calculation loop
     for(int i = start; i < rates_total; i++)
     {
-        //--- raw volume weighted sign
-        rawVol[i] = (close[i] > open[i]) ? tick_volume[i] : 
-                    ((close[i] < open[i]) ? -tick_volume[i] : 0);
-        //--- first EMA on rawVol
-        if(i == start)  // initialize first EMA value
-            emaRaw[i-1] = rawVol[i-1];
-        emaRaw[i] = rawVol[i] * alpha1 + emaRaw[i-1] * (1 - alpha1);
-        //--- second EMA gives LWTI
-        if(i == start)
-            LWTIBuffer[i-1] = emaRaw[i-1];
-        LWTIBuffer[i] = emaRaw[i] * alpha2 + LWTIBuffer[i-1] * (1 - alpha2);
+        // Get correct index for input arrays based on whether they are series or not
+        int idx = inputIsSeries ? rates_total - 1 - i : i;
+        
+        // Calculate raw volume with price direction
+        rawVol[i] = (close[idx] > open[idx]) ? tick_volume[idx] : 
+                   ((close[idx] < open[idx]) ? -tick_volume[idx] : 0);
+        
+        // First EMA calculation
+        if(i == 0)
+            emaRaw[i] = rawVol[i];
+        else
+            emaRaw[i] = rawVol[i] * alpha1 + emaRaw[i-1] * (1 - alpha1);
+        
+        // Second EMA gives LWTI
+        if(i == 0)
+            LWTIBuffer[i] = emaRaw[i];
+        else
+            LWTIBuffer[i] = emaRaw[i] * alpha2 + LWTIBuffer[i-1] * (1 - alpha2);
     }
 
     return(rates_total);
