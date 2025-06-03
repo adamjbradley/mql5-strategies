@@ -22,7 +22,7 @@ void EvaluateBB_EMA(string sym, SymbolState* state) {
    else if(bid<lowerBand){ isBuy=false; sl=NormalizeDouble(ask+ATRMultiplierSL*atr[0],_Digits); tp=NormalizeDouble(ask-ATRMultiplierTP*atr[0],_Digits); }
    else return;
    double lot=CalculateLotSize(sym,sl,isBuy);
-   OpenTrade(sym,isBuy,sl,tp,lot,NULL);
+   OpenTrade(sym,isBuy,sl,tp,lot);
    state.lastTradeTime=TimeCurrent();
 }
 

@@ -57,7 +57,7 @@ void EvaluateFVG_Breakout(string sym, SymbolState* state) {
    double lot = CalculateLotSize(sym, sl, fvgBull);
 
    // Open trade with SL only; no fixed TP (trailing stop handles exits)
-   OpenTrade(sym, fvgBull, sl, 0.0, lot, NULL);
+   OpenTrade(sym, fvgBull, sl, 0.0, lot);
    state.lastTradeTime = TimeCurrent();
 }
 

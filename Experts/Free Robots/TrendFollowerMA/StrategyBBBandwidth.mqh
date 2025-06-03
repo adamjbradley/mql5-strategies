@@ -43,7 +43,7 @@ void EvaluateBB_Bandwidth(string sym, SymbolState* state) {
    double sl=NormalizeDouble(bid-ATRMultiplierSL*atr[0],_Digits);
    double tp=NormalizeDouble(bid+ATRMultiplierTP*atr[0],_Digits);
    double lot=CalculateLotSize(sym,sl,true);
-   OpenTrade(sym,true,sl,tp,lot, NULL);
+   OpenTrade(sym,true,sl,tp,lot);
    state.lastTradeTime=TimeCurrent();
 }
 

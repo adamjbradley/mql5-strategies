@@ -16,7 +16,7 @@ void EvaluateMA_Cross(string sym, SymbolState* state) {
    else if(fastMA[0]<slowMA[0]){isBuy=false; sl=NormalizeDouble(ask+ATRMultiplierSL*atr[0],_Digits); tp=NormalizeDouble(ask-ATRMultiplierTP*atr[0],_Digits);}
    else return;
    double lot=CalculateLotSize(sym,sl,isBuy);
-   OpenTrade(sym,isBuy,sl,tp,lot, NULL);
+   OpenTrade(sym,isBuy,sl,tp,lot);
    state.lastTradeTime=TimeCurrent();
 }
 
