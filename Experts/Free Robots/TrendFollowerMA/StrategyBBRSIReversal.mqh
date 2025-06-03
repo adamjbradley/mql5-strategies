@@ -82,7 +82,7 @@ void EvaluateBB_RSI_Reversal(string sym, SymbolState* state) {
 
    // Open trade
    double lot = CalculateLotSize(sym, sl, isBuy);
-   OpenTrade(sym, isBuy, sl, tp, lot);
+   OpenTrade(sym, isBuy, sl, tp, lot, NULL);
    state.lastTradeTime = TimeCurrent();
 }
 
