@@ -5,7 +5,6 @@
 //+------------------------------------------------------------------+
 #include "..\Canvas.mqh"
 #include <Arrays\ArrayInt.mqh>
-#include <Arrays\ArrayUInt.mqh>
 #include <Arrays\ArrayDouble.mqh>
 #include <Arrays\ArrayString.mqh>
 //--- enumerations
@@ -73,7 +72,7 @@ protected:
    int               m_data_offset;
    uint              m_data_total;
    CArray           *m_data;
-   CArrayUInt        m_colors;
+   CArrayInt         m_colors;
    CArrayString      m_descriptors;
    //---
    CArrayInt         m_index;
@@ -562,7 +561,7 @@ bool CChartCanvas::ColorUpdate(const uint pos,const uint clr)
 void CChartCanvas::ValuesCheck(void)
   {
    string text;
-   int    w,h;
+   uint   w,h;
 //--- clear
    m_max_value_width=0;
    m_sum            =0;
@@ -594,14 +593,14 @@ void CChartCanvas::ValuesCheck(void)
             m_index.Add(i);
             text=DoubleToString(value,2);
             TextSize(text,w,h);
-            if(m_max_value_width<(uint)w)
-               m_max_value_width=(uint)w;
+            if(m_max_value_width<w)
+               m_max_value_width=w;
            }
         }
       text=DoubleToString(m_others,2);
       TextSize(text,w,h);
-      if(m_max_value_width<(uint)w)
-         m_max_value_width=(uint)w;
+      if(m_max_value_width<w)
+         m_max_value_width=w;
       m_index_size=m_index.Total();
      }
    else
@@ -694,9 +693,8 @@ void CChartCanvas::DrawLegend(void)
      }
    if(max_len==0)
     return;
-   TextSize(" - "+text,w,h);
-   m_max_descr_width=(uint)w;
-   w=w+3*h;
+   TextSize(" - "+text,m_max_descr_width,h);
+   w=(int)m_max_descr_width+3*h;
 //--- check flag
    if(!IS_SHOW_LEGEND)
       return;

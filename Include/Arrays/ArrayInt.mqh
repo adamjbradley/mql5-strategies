@@ -6,7 +6,8 @@
 #include "Array.mqh"
 //+------------------------------------------------------------------+
 //| Class CArrayInt.                                                 |
-//| Puprose: Class of dynamic array of int type values.              |
+//| Puprose: Class of dynamic array of variables                     |
+//|          of int or uint type.                                    |
 //|          Derives from class CArray.                              |
 //+------------------------------------------------------------------+
 class CArrayInt : public CArray

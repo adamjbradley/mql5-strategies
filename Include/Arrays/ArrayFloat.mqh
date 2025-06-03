@@ -6,7 +6,8 @@
 #include "Array.mqh"
 //+------------------------------------------------------------------+
 //| Class CArrayFloat.                                               |
-//| Purpose: Class of dynamic array of float type values.            |
+//| Purpose: Class of dynamic array of variable                      |
+//|          of float type.                                          |
 //|          Derives from class CArray.                              |
 //+------------------------------------------------------------------+
 class CArrayFloat : public CArray

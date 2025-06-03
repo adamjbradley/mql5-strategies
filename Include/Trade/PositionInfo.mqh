@@ -180,9 +180,7 @@ double CPositionInfo::PriceCurrent(void) const
 //+------------------------------------------------------------------+
 double CPositionInfo::Commission(void) const
   {
-//--- property POSITION_COMMISSION is deprecated
-   SetUserError(ERR_FUNCTION_NOT_ALLOWED);
-   return(0);
+   return(PositionGetDouble(POSITION_COMMISSION));
   }
 //+------------------------------------------------------------------+
 //| Get the property value "POSITION_SWAP"                           |

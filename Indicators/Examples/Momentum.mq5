@@ -10,7 +10,7 @@
 #property indicator_buffers 1
 #property indicator_plots   1
 #property indicator_type1   DRAW_LINE
-#property indicator_color1  clrDodgerBlue
+#property indicator_color1  DodgerBlue
 //--- input parameters
 input int InpMomentumPeriod=14; // Period
 //--- indicator buffer

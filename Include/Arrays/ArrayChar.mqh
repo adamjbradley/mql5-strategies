@@ -6,7 +6,8 @@
 #include "Array.mqh"
 //+------------------------------------------------------------------+
 //| Class CArrayChar.                                                |
-//| Purpose: Class of dynamic array of char type values.             |
+//| Purpose: Class of dynamic array of variables                     |
+//|          of char or uchar type.                                  |
 //|          Derives from class CArray.                              |
 //+------------------------------------------------------------------+
 class CArrayChar : public CArray

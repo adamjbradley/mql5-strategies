@@ -12,7 +12,7 @@
 #property indicator_buffers 4
 #property indicator_plots   1
 #property indicator_type1   DRAW_LINE
-#property indicator_color1  clrLightSeaGreen
+#property indicator_color1  LightSeaGreen
 //--- input parameters
 input int                 InpFastMA=3;                // Fast MA period
 input int                 InpSlowMA=10;               // Slow MA period

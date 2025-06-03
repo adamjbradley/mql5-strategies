@@ -85,38 +85,17 @@ ENUM_DATATYPE CiCustom::ParamType(const int ind) const
 //+------------------------------------------------------------------+
 long CiCustom::ParamLong(const int ind) const
   {
-   if(ind<m_num_params)
+   if(ind>=m_num_params)
+      return(0);
+   switch(m_params[ind].type)
      {
-      switch(m_params[ind].type)
-        {
-         case TYPE_BOOL:
-         case TYPE_CHAR:
-         case TYPE_UCHAR:
-         case TYPE_SHORT:
-         case TYPE_USHORT:
-         case TYPE_INT:
-         case TYPE_UINT:
-         case TYPE_COLOR:
-         case TYPE_LONG:
-         case TYPE_ULONG:
-         case TYPE_DATETIME:
-            return(m_params[ind].integer_value);
-         case TYPE_STRING:
-         case TYPE_DOUBLE:
-         case TYPE_FLOAT:
-         case TYPE_VECTOR:
-         case TYPE_VECTORF:
-         case TYPE_VECTORC:
-         case TYPE_VECTORCF:
-         case TYPE_MATRIX:
-         case TYPE_MATRIXF:
-         case TYPE_MATRIXC:
-         case TYPE_MATRIXCF:
-            break;
-        }
+      case TYPE_DOUBLE:
+      case TYPE_FLOAT:
+      case TYPE_STRING:
+         return(0);
      }
 //---
-   return(0);
+   return(m_params[ind].integer_value);
   }
 //+------------------------------------------------------------------+
 //| Get specified parameter of creation as a double value            |
@@ -189,16 +168,6 @@ bool CiCustom::Initialize(const string symbol,const ENUM_TIMEFRAMES period,const
                break;
             case TYPE_STRING:
                m_status=m_status+",'"+params[i].string_value+"'";
-               break;
-            case TYPE_VECTOR:
-            case TYPE_VECTORF:
-            case TYPE_VECTORC:
-            case TYPE_VECTORCF:
-            case TYPE_MATRIX:
-            case TYPE_MATRIXF:
-            case TYPE_MATRIXC:
-            case TYPE_MATRIXCF:
-               m_status=m_status+",<NA>";
                break;
            }
         }

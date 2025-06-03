@@ -6,7 +6,8 @@
 #include "Array.mqh"
 //+------------------------------------------------------------------+
 //| Class CArrayShort.                                               |
-//| Pupose: Class of dynamic array of short type values.             |
+//| Pupose: Class of dynamic array of variables                      |
+//|         of short or ushort type.                                 |
 //|         Derives from class CArray.                               |
 //+------------------------------------------------------------------+
 class CArrayShort : public CArray
